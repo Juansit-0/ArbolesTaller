@@ -136,13 +136,55 @@ button.ghost { color: var(--muted); }
 
 .edge.hot { stroke: var(--acid); stroke-width: 2.5; }
 
+.edge { stroke-dasharray: 1; stroke-dashoffset: 0; }
+
+.edge.fresh { animation: vein 900ms cubic-bezier(0.16, 1, 0.3, 1) both; stroke: var(--blood); }
+
+@keyframes vein { from { stroke-dashoffset: 1; } }
+
 .node { cursor: pointer; outline: none; }
 
-.node circle { stroke: var(--ink); stroke-width: 3; transition: r 240ms cubic-bezier(0.16, 1, 0.3, 1); }
+.node .zombie { transition: filter 240ms ease-out; }
 
-.node.infected circle { fill: var(--blood); }
-.node.cured circle { fill: var(--cure); }
-.node.eliminated circle { fill: var(--dead); }
+.node.infected .zombie { animation: sway 2.6s ease-in-out var(--sway) infinite alternate; transform-origin: 0 34px; }
+
+@keyframes sway { from { rotate: -4deg; } to { rotate: 4deg; } }
+
+.node.rise { animation: rise 820ms cubic-bezier(0.16, 1, 0.3, 1) var(--delay) both; }
+
+.node.fresh { animation: lunge 900ms cubic-bezier(0.34, 1.56, 0.64, 1) 300ms both; }
+
+@keyframes rise { from { opacity: 0; translate: 0 34px; filter: blur(6px); clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 -20% 0); } }
+
+@keyframes lunge { from { opacity: 0; scale: 0.2; filter: blur(4px) drop-shadow(0 0 0 var(--blood)); } 60% { filter: drop-shadow(0 0 14px var(--blood)); } }
+
+.node.pulse .zombie { animation: hit 520ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes hit { 30% { scale: 1.25; filter: drop-shadow(0 0 10px var(--acid)); } }
+
+.node:hover .zombie { filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)) brightness(1.15); }
+
+.shadow { fill: #000; opacity: 0.45; }
+
+.z-shirt { fill: #4a3f35; }
+.z-tear { stroke: #241d17; stroke-width: 1.6; fill: none; }
+.z-neck, .z-skin { fill: var(--skin); }
+.z-hair { fill: #2b2620; }
+.z-scar { stroke: #7a2a22; stroke-width: 1.3; fill: none; stroke-linecap: round; }
+.z-mouth { stroke: #2a0d0a; stroke-width: 1.8; fill: none; stroke-linejoin: round; }
+.z-eye { fill: var(--eye); }
+.z-x { stroke: #1a1d1b; stroke-width: 2; stroke-linecap: round; opacity: 0; }
+
+.node.infected { --skin: #8fa66a; --eye: #ffd23a; }
+.node.infected .z-eye { animation: glare 1.8s ease-in-out infinite alternate; }
+.node.cured { --skin: #e0b48f; --eye: #2b2620; }
+.node.cured .z-scar, .node.cured .z-tear { opacity: 0.25; }
+.node.cured .z-mouth { d: path("M-6 5 C-2 9 2 9 6 5"); stroke: #6b3a2e; }
+.node.eliminated { --skin: #6f746e; --eye: transparent; }
+.node.eliminated .zombie { rotate: 14deg; opacity: 0.75; transform-origin: 0 34px; }
+.node.eliminated .z-x { opacity: 1; }
+
+@keyframes glare { from { opacity: 0.55; } to { opacity: 1; filter: drop-shadow(0 0 3px #ffd23a); } }
 
 .node text { fill: var(--paper); font: 500 13px var(--sans); }
 
@@ -185,8 +227,8 @@ button.ghost { color: var(--muted); }
 .legend { display: flex; gap: 20px; margin-top: 14px; font-size: 13px; color: var(--muted); }
 
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; }
-.dot.infected { background: var(--blood); }
-.dot.cured { background: var(--cure); }
+.dot.infected { background: #8fa66a; }
+.dot.cured { background: #e0b48f; }
 .dot.eliminated { background: var(--dead); }
 
 .side { display: flex; flex-direction: column; gap: 16px; }
