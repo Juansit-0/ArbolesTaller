@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outbreak Tree</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-title">
+      <p class="file-code">Case file OB-117 · Restricted</p>
+      <h1>Outbreak Tree</h1>
+    </div>
+    <p class="masthead-lede">Every bite is a branch. Patient zero sits at the root; each infected person hangs from whoever bit them.</p>
+    <button class="ghost" id="reset">Reset case file</button>
+  </header>
+
+  <section class="metrics" id="metrics" aria-live="polite"></section>
+
+  <main class="layout">
+    <section class="board" aria-label="Infection tree">
+      <div class="board-head">
+        <h2>Infection map</h2>
+        <div class="traverse" role="group" aria-label="Traversals">
+          <button data-kind="preorder">Preorder</button>
+          <button data-kind="postorder">Postorder</button>
+          <button data-kind="levelorder">Level order</button>
+        </div>
+      </div>
+      <div class="canvas" id="canvas"></div>
+      <ol class="sequence" id="sequence" aria-label="Traversal result"></ol>
+      <div class="legend">
+        <span><i class="dot infected"></i>Infected</span>
+        <span><i class="dot cured"></i>Cured</span>
+        <span><i class="dot eliminated"></i>Eliminated</span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <form class="panel" id="bite-form">
+        <h2>Log a bite</h2>
+        <label>Biter<select name="biter" id="biter" required></select></label>
+        <label>New victim<input name="victim" required maxlength="40" autocomplete="off" placeholder="Full name"></label>
+        <label>Place<input name="place" required maxlength="60" autocomplete="off" placeholder="Where it happened"></label>
+        <label>Day and hour<input name="bitten_at" required maxlength="20" autocomplete="off" placeholder="Day 3 14:20"></label>
+        <button type="submit" class="primary">Add to tree</button>
+      </form>
+
+      <form class="panel" id="search-form">
+        <h2>Trace a subject</h2>
+        <label>Name<input name="name" required autocomplete="off" placeholder="Kim Osei" list="names"></label>
+        <datalist id="names"></datalist>
+        <button type="submit">Trace to patient zero</button>
+      </form>
+
+      <section class="panel dossier" id="dossier" aria-live="polite">
+        <h2>Dossier</h2>
+        <p class="empty">Select a subject on the map or trace a name.</p>
+      </section>
+
+      <p class="toast" id="toast" role="status"></p>
+    </aside>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
